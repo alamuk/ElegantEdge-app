@@ -19,7 +19,7 @@ import { rootReducer } from "./root-reducer";
 //
 // // the logger will be used here only when we are in development not in production.
 const middlewares = [process.env.NODE_ENV !== "production" && logger].filter(
-  Boolean,
+    Boolean
 );
 //
 // const composedEnhancer =
@@ -31,12 +31,11 @@ const middlewares = [process.env.NODE_ENV !== "production" && logger].filter(
 // const composedEnhancers = composedEnhancer(applyMiddleware(...middlewares));
 
 export const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(middlewares),
-  // getDefaultMiddleware({
-  //   serializableCheck: false,
-  // }).concat(middlewares),
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(middlewares),
+    // getDefaultMiddleware({
+    //   serializableCheck: false,
+    // }).concat(middlewares),
 });
 
 //

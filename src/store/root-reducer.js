@@ -5,7 +5,7 @@ import { cartReducer } from "./cart/cart.reducer";
 
 //this import help to combine the final big reducer //object
 export const rootReducer = combineReducers({
-  user: userReducer,
-  categories: categoriesReducer,
-  cart: cartReducer,
+    user: userReducer,
+    categories: categoriesReducer,
+    cart: cartReducer,
 });
