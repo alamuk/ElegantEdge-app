@@ -1,6 +1,8 @@
-import SignInForm from '../../components/sign-in-form/SignInForm';
-import SignUpForm from '../../components/signup-form/SignUpForm';
-import './Authentication.scss';
+import SignUpForm from "../../components/signup-form/SignUpForm";
+import SignInForm from "../../components/sign-in-form/SignInForm";
+import "./Authentication.scss";
+// import { useEffect, useState } from "react";
+// import { createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 
 const Authentication = () => {
   // Since when we are redirected to the Google page, we lose all the state from the login page
@@ -9,21 +11,19 @@ const Authentication = () => {
   // all the authentication state happening throughout the application.
   // auth = authentication MEMORY BANK single instance.
   // useEffect will run on Mounting of the SignIn component
-  // useEffect( () => {
-  //     async function getRedirectUserResult() {
-  //         const response = await getRedirectResult(auth);
+  // useEffect(() => {
+  //   async function getRedirectUserResult() {
+  //     const response = await getRedirectResult(auth);
   //
-  //         console.log(response.user);
+  //     console.log(response.user);
   //
-  //         if (response) {
-  //             const userDocRef =
-  //                 await createUserDocumentFromAuth(response.user)
-  //         }
+  //     if (response) {
+  //       const userDocRef = await createUserDocumentFromAuth(response.user);
   //     }
+  //   }
   //
-  //     getRedirectUserResult();
+  //   getRedirectUserResult();
   // }, [auth]);
-
   return (
     <div className="authentication-container">
       <SignInForm />
@@ -31,5 +31,5 @@ const Authentication = () => {
     </div>
   );
 };
-
+console.log(Authentication);
 export default Authentication;

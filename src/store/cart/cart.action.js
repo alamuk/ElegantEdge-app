@@ -1,6 +1,7 @@
-import { createAction } from '../../utils/reducer/reducer.utils';
-import { CART_ACTION_TYPES } from './cart.types';
+import { CART_ACTION_TYPE } from "./cart.type";
+import { CreateAction } from "../../utils/reducer/reducer.utils";
 
+// ///
 const addCartItem = (cartItems, productToAdd) => {
   const existingCartItem = cartItems.find(
     (cartItem) => cartItem.id === productToAdd.id,
@@ -9,10 +10,7 @@ const addCartItem = (cartItems, productToAdd) => {
   if (existingCartItem) {
     return cartItems.map((cartItem) =>
       cartItem.id === productToAdd.id
-        ? {
-            ...cartItem,
-            quantity: cartItem.quantity + 1,
-          }
+        ? { ...cartItem, quantity: cartItem.quantity + 1 }
         : cartItem,
     );
   }
@@ -31,35 +29,28 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
 
   return cartItems.map((cartItem) =>
     cartItem.id === cartItemToRemove.id
-      ? {
-          ...cartItem,
-          quantity: cartItem.quantity - 1,
-        }
+      ? { ...cartItem, quantity: cartItem.quantity - 1 }
       : cartItem,
   );
 };
-
+// //
+export const setIsCartOpen = (boolean) =>
+  CreateAction(CART_ACTION_TYPE.SET_IS_CART_OPEN, boolean);
+// ////
 const clearCartItem = (cartItems, cartItemToClear) => {
   return cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
 };
-
+//  3 helper functions:
 export const addItemToCart = (cartItems, productToAdd) => {
   const newCartItems = addCartItem(cartItems, productToAdd);
-  return createAction(CART_ACTION_TYPES.SET_CART_ITEMS, newCartItems);
-  // updateCartItemReducer(newCartItems);
+  return CreateAction(CART_ACTION_TYPE.SET_CART_ITEMS, newCartItems);
 };
 
 export const removeItemFromCart = (cartItems, cartItemToRemove) => {
   const newCartItems = removeCartItem(cartItems, cartItemToRemove);
-  return createAction(CART_ACTION_TYPES.SET_CART_ITEMS, newCartItems);
-  // updateCartItemReducer(newCartItems);
+  return CreateAction(CART_ACTION_TYPE.SET_CART_ITEMS, newCartItems);
 };
-
 export const clearItemFromCart = (cartItems, cartItemToClear) => {
   const newCartItems = clearCartItem(cartItems, cartItemToClear);
-  return createAction(CART_ACTION_TYPES.SET_CART_ITEMS, newCartItems);
-  // updateCartItemReducer(newCartItems);
+  return CreateAction(CART_ACTION_TYPE.SET_CART_ITEMS, newCartItems);
 };
-
-export const setIsCartOpen = (bool) =>
-  createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool);

@@ -1,5 +1,4 @@
-import styled from 'styled-components';
-
+import styled from "styled-components";
 export const BaseButton = styled.button`
   min-width: 165px;
   width: auto;
@@ -11,7 +10,7 @@ export const BaseButton = styled.button`
   background-color: black;
   color: white;
   text-transform: uppercase;
-  font-family: 'Open Sans Condensed';
+  font-family: "Open Sans Condensed", serif;
   font-weight: bolder;
   border: none;
   cursor: pointer;
@@ -25,7 +24,7 @@ export const BaseButton = styled.button`
   }
 `;
 
-export const GoogleSignInButton = styled(BaseButton)`
+export const GoogleSignButton = styled(BaseButton)`
   background-color: #4285f4;
   color: white;
 

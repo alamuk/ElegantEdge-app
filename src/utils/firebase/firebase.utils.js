@@ -1,44 +1,42 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp } from "firebase/app";
 
 import {
   createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
   signInWithPopup,
   signInWithRedirect,
+  signInWithEmailAndPassword,
   signOut,
-} from 'firebase/auth';
+  onAuthStateChanged,
+} from "firebase/auth";
 
-// Firestore service
 import {
-  collection,
   doc,
   getDoc,
-  getDocs,
   getFirestore,
-  query,
   setDoc,
+  collection,
   writeBatch,
-} from 'firebase/firestore';
+  query,
+  getDocs,
+} from "firebase/firestore";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyDh1vHxqbNuzDsHd9C7eUaiYG8ok670h4Q',
-  authDomain: 'crown-clothing-db-62cd1.firebaseapp.com',
-  projectId: 'crown-clothing-db-62cd1',
-  storageBucket: 'crown-clothing-db-62cd1.appspot.com',
-  messagingSenderId: '624759944400',
-  appId: '1:624759944400:web:084bb48ba10de775649ad5',
+  apiKey: "AIzaSyDGj1pWbGkhb2EAF7O5jDzyX_GG9vqUuP8",
+  authDomain: "captain-clothing-app.firebaseapp.com",
+  projectId: "captain-clothing-app",
+  storageBucket: "captain-clothing-app.appspot.com",
+  messagingSenderId: "853122574930",
+  appId: "1:853122574930:web:dff1d5a0bc6a7c084d0d8b",
 };
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
-  prompt: 'select_account',
+  prompt: "select_account",
 });
 
 export const auth = getAuth();
@@ -53,48 +51,56 @@ export const signInWithGoogleRedirect = () =>
 // db instance to create the database or get an instance (single instance)
 export const db = getFirestore();
 
-/**
- * Adds a collection of documents to a specified collection in the database.
- *
- * @param {string} collectionKey - The key of the collection where the documents will be added.
- * @param {Array} objectsToAdd - An array of objects to be added as documents in the collection.
- * @returns {Promise<void>} - A promise that resolves when the batch operation is completed.
- */
 export const addCollectionAndDocuments = async (
   collectionKey,
   objectsToAdd,
 ) => {
   const collectionRef = collection(db, collectionKey);
-
   const batch = writeBatch(db);
-
-  objectsToAdd.forEach((obj) => {
-    // get document reference, collectionRef knows the database and collection.
-    const docRef = doc(collectionRef, obj.title.toLowerCase());
-    batch.set(docRef, obj);
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
   });
-
   await batch.commit();
-  console.log('done');
+  console.log("done");
 };
 
-/**
- * Retrieves categories and their corresponding documents from the Firestore database.
- *
- * @returns {Promise<Object>} A promise that resolves with an object containing the categories as keys and
- * their documents as values.
- *
- * @throws {Error} If there is an error in retrieving the categories and documents.
- */
 export const getCategoriesAndDocuments = async () => {
-  const collectionRef = collection(db, 'categories');
-
+  const collectionRef = collection(db, "caregories");
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-
   return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
+
+  // const categoryMap = querySnapshot.docs;
+  //     .reduce((acc, docSnapshot) => {
+  //   const { title, items } = docSnapshot.data();
+  //
+  //   acc[title.toLowerCase()] = items;
+  //   return acc;
+  // }, {});
+  // console.log(categoryMap);
+  // return categoryMap;
 };
+
+/*
+{
+hats: { /// main-categories ///
+title: 'Hats'   /// sub-categories///
+items: [  /// products details objets ///
+{}'
+{}
+]},
+//
+sneakers: {
+title: 'Sneakers'
+items: [
+{}'
+{}
+]},
+
+}
+ */
 
 /**
  * Function to create a user document from user authentication.
@@ -110,7 +116,7 @@ export const getCategoriesAndDocuments = async () => {
 export const createUserDocumentFromAuth = async (
   userAuth,
   additionalInformation = {
-    displayName: '',
+    displayName: "",
   },
 ) => {
   if (!userAuth) return;
@@ -118,7 +124,7 @@ export const createUserDocumentFromAuth = async (
   // If we don't have that in the database then Google will generate it for us.
   // db = database, users = collection, userAuth.id = unique ID
   // The data comes as a response from the Google authentication has all these data.
-  const userDocRef = doc(db, 'users', userAuth.uid);
+  const userDocRef = doc(db, "users", userAuth.uid);
 
   // We get a snapshot from the user document reference.
   // Snapshot is a specific Object that has the data.
@@ -142,7 +148,7 @@ export const createUserDocumentFromAuth = async (
         ...additionalInformation,
       });
     } catch (error) {
-      console.log('There was an error creating the user', error.message);
+      console.log("There was an error creating the user", error.message);
     }
   }
 
@@ -166,16 +172,3 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
-
-export const getCurrentUser = () => {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      (userAuth) => {
-        unsubscribe();
-        resolve(userAuth);
-      },
-      reject,
-    );
-  });
-};
